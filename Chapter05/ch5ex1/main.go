@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
-	doc, err := goquery.NewDocument("https://www.packtpub.com/latest-releases")
+	// doc, err := goquery.NewDocument("https://www.packtpub.com/en-ru/data")
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader("https://www.packtpub.com/en-ru/data"))
 	if err != nil {
 		panic(err)
 	}
@@ -23,7 +24,9 @@ func main() {
 			link, _ := e.Attr("href")
 			link = "https://www.packtpub.com" + link
 
-			bookPage, err := goquery.NewDocument(link)
+			// bookPage, err := goquery.NewDocument(link)
+			bookPage, err := goquery.NewDocumentFromReader(strings.NewReader(link))
+
 			if err != nil {
 				panic(err)
 			}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"io"
 
 	"github.com/gregjones/httpcache"
 	"github.com/gregjones/httpcache/diskcache"
@@ -24,7 +24,7 @@ func main() {
 	}
 
 	// httpcache requires you to read the body in order to cache the response
-	ioutil.ReadAll(resp.Body)
+	io.ReadAll(resp.Body)
 	resp.Body.Close()
 
 	// Request index.html again

@@ -1,30 +1,46 @@
 package main
 
 import (
+	"log"
+
 	"github.com/tebeka/selenium"
+	"github.com/tebeka/selenium/chrome"
 )
 
 func main() {
 
 	// The paths to these binaries will be different on your machine!
 
-	const (
-		seleniumPath    = "/home/vincent/Documents/workspace/Go/src/github.com/tebeka/selenium/vendor/selenium-server-standalone-3.14.0.jar"
-		geckoDriverPath = "/home/vincent/Documents/workspace/Go/src/github.com/tebeka/selenium/vendor/geckodriver-v0.23.0-linux64"
-	)
+	// const (
+	// 	seleniumPath    = "c/Users/Ivan/go/pkg/mod/github.com/tebeka/selenium@v0.9.9/vendor/selenium-server.jar"
+	// 	geckoDriverPath = "с/Users/Ivan/go/pkg/mod/github.com/tebeka/selenium@v0.9.9/vendor/geckodriver.tar.gz"
+	// )
 
-	service, err := selenium.NewSeleniumService(
-		seleniumPath,
-		8080,
-		selenium.GeckoDriver(geckoDriverPath))
+	// service, err := selenium.NewSeleniumService(
+	// 	seleniumPath,
+	// 	8080,
+	// 	selenium.GeckoDriver(geckoDriverPath))
+
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// defer service.Stop()
+
+	// initialize a Chrome browser instance on port 4444
+	service, err := selenium.NewChromeDriverService("./chromedriver/chromedriver.exe", 4444)
 
 	if err != nil {
-		panic(err)
+		log.Fatal("Error:", err)
 	}
+
 	defer service.Stop()
 
-	caps := selenium.Capabilities{"browserName": "firefox"}
-	wd, err := selenium.NewRemote(caps, "http://localhost:8080/wd/hub")
+	caps := selenium.Capabilities{}
+	caps.AddChrome(chrome.Capabilities{Args: []string{
+		"--headless-new", // comment out this line for testing
+	}})
+
+	wd, err := selenium.NewRemote(caps, "")
 	if err != nil {
 		panic(err)
 	}
